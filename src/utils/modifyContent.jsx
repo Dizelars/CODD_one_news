@@ -29,26 +29,24 @@ const modifyContent = (item, i) => {
   linkElement.href = item.link
   content.querySelector("header").appendChild(linkElement)
 
-  const galleries = content.querySelectorAll("[data-block=gallery]")
-  galleries.forEach((gallery) => {
-    let inner = ""
-    const images = gallery.querySelectorAll("img")
+  // const galleries = content.querySelectorAll("[data-block=gallery]")
+  // galleries.forEach((gallery) => {
+  //   let inner = ""
+  //   const images = gallery.querySelectorAll("img")
 
-    images.forEach((img) => {
-      inner += `<swiper-slide><img src="${img.src}"/></swiper-slide>`
-    })
-    // navigation="true"
-    // grab-cursor="true"
-    gallery.innerHTML = `
-    <swiper-container
-      pagination="true"
-      pagination-clickable="true"
-      auto-height="true"
-      grab-cursor="true"
-      loop="true">
-          ${inner}
-    </swiper-container>`
-  })
+  //   images.forEach((img) => {
+  //     inner += `<swiper-slide><img src="${img.src}"/></swiper-slide>`
+  //   })
+  //   gallery.innerHTML = `
+  //   <swiper-container
+  //     pagination="true"
+  //     pagination-clickable="true"
+  //     auto-height="true"
+  //     grab-cursor="true"
+  //     loop="true">
+  //         ${inner}
+  //   </swiper-container>`
+  // })
 
   // Получаем все ссылки
   const links = content.querySelectorAll("a")
@@ -210,10 +208,14 @@ const modifyContent = (item, i) => {
             .map((img) => img.src)
             .filter((src) => src !== item.image)
 
-          foundSwiper = <Swiper images={srcs} key={+Date.now()} />
-
-          // components.push(<Swiper images={srcs} key={key} />)
-          break
+          // foundSwiper = <Swiper images={srcs} key={+Date.now()} />
+          // break
+          if (srcs.length > 1) {
+            foundSwiper = <Swiper images={srcs} key={+Date.now()} />;
+          } else if (srcs.length === 1) {
+              foundSwiper = <Image src={srcs[0]} alt='' key={+Date.now()} />;
+          }
+          break;
         }
         console.log("MISSED DIIIIIIIIIV")
         console.log(child)

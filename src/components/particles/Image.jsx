@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import Modal from "./Modal"
-import { createPortal } from "react-dom"
 
 const Image = ({ src, zoomable = false }) => {
   const [isActive, setIsActive] = useState(false)
@@ -29,13 +28,11 @@ const Image = ({ src, zoomable = false }) => {
         alt=''
         onClick={zoomable ? zoomHandler : null}
       />
-      {isActive &&
-        createPortal(
-          <Modal close={closeHandler}>
-            <img src={src} alt='' />
-          </Modal>,
-          document.querySelector("#modals")
-        )}
+      {isActive && (
+        <Modal close={closeHandler}>
+          <img src={src} alt='' />
+        </Modal>
+      )}
     </>
   )
 }

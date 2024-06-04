@@ -42,7 +42,7 @@ function App() {
           return String(elementId) === newsId
         })
 
-        console.log(currentItem)
+        // console.log(currentItem)
 
         if (!currentItem) throw new Error("didnt find")
 
@@ -64,7 +64,7 @@ function App() {
         }
 
         currentItem = { title, link, pubDate, author, image, content }
-        console.log(currentItem)
+        // console.log(currentItem)
 
         setNews(currentItem)
         setLoading(false)

@@ -16,3 +16,7 @@ body * {
 .special-color-1 .limited .separator {
   background-color: #000 !important;
 }
+
+.modals {
+  z-index: 1000;
+}

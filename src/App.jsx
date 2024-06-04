@@ -21,6 +21,9 @@ function App() {
       setlimited(true)
     }
 
+    const urlParams = new URLSearchParams(window.location.search)
+    const newsId = urlParams.get("id")
+
     fetch(url)
       .then((response) => response.text())
       .then((data) => {
@@ -33,32 +36,37 @@ function App() {
           const turboAttribute = item.getAttribute("turbo")
           return turboAttribute === null || turboAttribute === "true"
         })
-        newsItems = newsItems.map((el) => {
-          let title, link, pubDate, author, image, content
-          if (el.querySelector("title"))
-            title = el.querySelector("title").textContent
-          if (el.querySelector("link"))
-            link = el.querySelector("link").textContent
-          if (el.querySelector("pubDate"))
-            pubDate = el.querySelector("pubDate").textContent
-          if (el.querySelector("author"))
-            author = el.querySelector("author").textContent
-          if (el.querySelector("enclosure"))
-            image = el.querySelector("enclosure").attributes.url.textContent
-          if (el.getElementsByTagName("turbo:content")) {
-            content = el.getElementsByTagName("turbo:content")[0].textContent
-          }
 
-          return { title, link, pubDate, author, image, content }
+        let currentItem = newsItems.find((el) => {
+          const elementId = Date.parse(el.querySelector("pubDate").textContent)
+          return String(elementId) === newsId
         })
 
-        newsItems.sort((a, b) => {
-          const dateA = new Date(a.pubDate)
-          const dateB = new Date(b.pubDate)
-          return dateB - dateA
-        })
+        console.log(currentItem)
 
-        setNews(newsItems)
+        if (!currentItem) throw new Error("didnt find")
+
+        let title, link, pubDate, author, image, content
+        if (currentItem.querySelector("title"))
+          title = currentItem.querySelector("title").textContent
+        if (currentItem.querySelector("link"))
+          link = currentItem.querySelector("link").textContent
+        if (currentItem.querySelector("pubDate"))
+          pubDate = currentItem.querySelector("pubDate").textContent
+        if (currentItem.querySelector("author"))
+          author = currentItem.querySelector("author").textContent
+        if (currentItem.querySelector("enclosure"))
+          image =
+            currentItem.querySelector("enclosure").attributes.url.textContent
+        if (currentItem.getElementsByTagName("turbo:content")) {
+          content =
+            currentItem.getElementsByTagName("turbo:content")[0].textContent
+        }
+
+        currentItem = { title, link, pubDate, author, image, content }
+        console.log(currentItem)
+
+        setNews(currentItem)
         setLoading(false)
       })
       .catch((error) => {

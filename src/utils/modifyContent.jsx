@@ -2,7 +2,6 @@ import Header from "../components/particles/Header"
 import Image from "../components/particles/Image"
 import RedactorText from "../components/particles/RedactorText"
 import Blockquote from "../components/particles/Blockquote"
-import Separator from "../components/particles/Separator"
 import Swiper from "../components/particles/Swiper"
 import Video from "../components/particles/Video"
 
@@ -101,11 +100,14 @@ const modifyContent = (item, i) => {
     p.textContent = text
 
     // Проверяем, есть ли у элемента атрибут style и не пустой ли он
-    if (strong.hasAttribute("style") && strong.getAttribute("style").trim() !== "") {
-        p.setAttribute("style", strong.getAttribute("style"));
+    if (
+      strong.hasAttribute("style") &&
+      strong.getAttribute("style").trim() !== ""
+    ) {
+      p.setAttribute("style", strong.getAttribute("style"))
     }
 
-    strong.replaceWith(p);
+    strong.replaceWith(p)
   })
 
   const ems = content.querySelectorAll("em")
@@ -117,7 +119,7 @@ const modifyContent = (item, i) => {
 
     // Проверяем, есть ли у элемента атрибут style и не пустой ли он
     if (em.hasAttribute("style") && em.getAttribute("style").trim() !== "") {
-        p.setAttribute("style", em.getAttribute("style"));
+      p.setAttribute("style", em.getAttribute("style"))
     }
 
     em.replaceWith(p)
@@ -161,10 +163,6 @@ const modifyContent = (item, i) => {
   titleImg.alt = "title image"
   content.querySelector("header").appendChild(titleImg)
 
-  // const separator = document.createElement("div")
-  // separator.classList.add("separator")
-  // content.body.appendChild(separator)
-
   //удаление картинок и видео для версии для слабовидящих
   if (!!window.limit) {
     const objects = content.querySelectorAll("video, img, figure")
@@ -186,11 +184,11 @@ const modifyContent = (item, i) => {
       case "img":
         const zoomable = child.nextSibling.localName === "hr"
         if (zoomable) {
-          foundZoom = <Image src={child.src} alt='' key={key} zoomable={zoomable} />
-        } else {
-          components.push(
-            <Image src={child.src} alt='' key={key}/>
+          foundZoom = (
+            <Image src={child.src} alt='' key={key} zoomable={zoomable} />
           )
+        } else {
+          components.push(<Image src={child.src} alt='' key={key} />)
         }
         break
       case "div":
@@ -245,12 +243,7 @@ const modifyContent = (item, i) => {
         break
       case "blockquote":
         if (child.classList.contains("t-redactor__quote")) {
-          components.push(
-            <Blockquote
-              innerHTML={child.innerHTML}
-              key={key}
-            />
-          )
+          components.push(<Blockquote innerHTML={child.innerHTML} key={key} />)
           break
         }
         break
@@ -268,7 +261,7 @@ const modifyContent = (item, i) => {
   if (foundSwiper) components.push(foundSwiper)
   if (foundZoom) components.push(foundZoom)
   if (foundVideo) components.push(foundVideo)
-  components.push(<Separator key={item.pubDate + components.length} />)
+  // components.push(<Separator key={item.pubDate + components.length} />)
 
   return { ...item, content: content.body.innerHTML, components }
 }

@@ -30,6 +30,7 @@ root.render(
   <ThemeProvider theme={theme}>
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
       <App />
+      <div id='modals'></div>
     </LocalizationProvider>
   </ThemeProvider>
 )

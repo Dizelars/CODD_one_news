@@ -112,7 +112,7 @@ p.news_date,
   object-fit: cover;
 }
 
-.feed .zooming_chart img {
+.feed .zoomable {
   object-fit: contain;
   cursor: zoom-in;
 }

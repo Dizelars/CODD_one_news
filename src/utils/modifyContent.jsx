@@ -2,6 +2,7 @@ import Header from "../components/particles/Header"
 import Image from "../components/particles/Image"
 import RedactorText from "../components/particles/RedactorText"
 import Blockquote from "../components/particles/Blockquote"
+import BlockquoteCallout from "../components/particles/BlockquoteCallout"
 import Swiper from "../components/particles/Swiper"
 import Video from "../components/particles/Video"
 
@@ -23,30 +24,13 @@ const modifyContent = (item, i) => {
   dateElement.classList.add("news_date")
   content.querySelector("header").appendChild(dateElement)
 
-  const linkElement = document.createElement("a")
-  linkElement.innerHTML = "Источник"
-  linkElement.classList.add("news_source")
-  linkElement.href = item.link
-  content.querySelector("header").appendChild(linkElement)
-
-  // const galleries = content.querySelectorAll("[data-block=gallery]")
-  // galleries.forEach((gallery) => {
-  //   let inner = ""
-  //   const images = gallery.querySelectorAll("img")
-
-  //   images.forEach((img) => {
-  //     inner += `<swiper-slide><img src="${img.src}"/></swiper-slide>`
-  //   })
-  //   gallery.innerHTML = `
-  //   <swiper-container
-  //     pagination="true"
-  //     pagination-clickable="true"
-  //     auto-height="true"
-  //     grab-cursor="true"
-  //     loop="true">
-  //         ${inner}
-  //   </swiper-container>`
-  // })
+  if (item.link) {
+    const linkElement = document.createElement("a")
+    linkElement.innerHTML = "Источник"
+    linkElement.classList.add("news_source")
+    linkElement.href = item.link
+    content.querySelector("header").appendChild(linkElement)
+  }
 
   // Получаем все ссылки
   const links = content.querySelectorAll("a")
@@ -170,6 +154,7 @@ const modifyContent = (item, i) => {
   let foundSwiper = null
   let foundZoom = null
   let foundVideo = null
+  let foundCallout = null
 
   content.body.childNodes.forEach((child) => {
     const tagName = child.localName
@@ -198,18 +183,12 @@ const modifyContent = (item, i) => {
         } else if (child.classList.contains("video_wrapper")) {
           const video = child.querySelector("video")
           foundVideo = <Video src={video.src} poster={video.poster} key={key} />
-          // components.push(
-          //   <Video src={video.src} poster={video.poster} key={key} />
-          // )
           break
         } else if (child.dataset.block === "gallery") {
           const imgs = [...child.querySelectorAll("img")]
           const srcs = imgs
             .map((img) => img.src)
             .filter((src) => src !== item.image)
-
-          // foundSwiper = <Swiper images={srcs} key={+Date.now()} />
-          // break
           if (srcs.length > 1) {
             foundSwiper = <Swiper images={srcs} key={+Date.now()} />;
           } else if (srcs.length === 1) {
@@ -245,7 +224,10 @@ const modifyContent = (item, i) => {
         break
       case "blockquote":
         if (child.classList.contains("t-redactor__quote")) {
-          components.push(<Blockquote innerHTML={child.innerHTML} key={key} />)
+            components.push(<Blockquote innerHTML={child.innerHTML} key={key} />)
+          break
+        } else if (child.classList.contains("t-redactor__callout")) {
+            foundCallout = <BlockquoteCallout innerHTML={child.innerHTML} key={key}/>
           break
         }
         break
@@ -263,7 +245,7 @@ const modifyContent = (item, i) => {
   if (foundSwiper) components.push(foundSwiper)
   if (foundZoom) components.push(foundZoom)
   if (foundVideo) components.push(foundVideo)
-  // components.push(<Separator key={item.pubDate + components.length} />)
+  if (foundCallout) components.push(foundCallout)
 
   return { ...item, content: content.body.innerHTML, components }
 }

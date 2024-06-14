@@ -108,7 +108,7 @@ const Swiper = ({ images }) => {
       pagination: {
         clickable: true,
       },
-      loop: true,
+      // loop: true,
       centerInsufficientSlides: true,
       centeredSlides: true,
       injectStyles: [

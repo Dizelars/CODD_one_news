@@ -6,7 +6,8 @@ import Loader from "./components/Loader"
 import Feed from "./components/Feed"
 
 // const url = "https://ictransport.ru/rss-feed-682234369181.xml"
-const url = "https://ictransport.ru/rss-feed-827453696181.xml"
+// const url = "https://ictransport.ru/rss-feed-827453696181.xml"
+const url = "https://coddmac.store/codd_news/copy_xml/smi/potok_smi.xml"
 
 function App() {
   const [news, setNews] = useState([])
@@ -46,7 +47,7 @@ function App() {
 
         if (!currentItem) throw new Error("didnt find")
 
-        let title, link, pubDate, author, image, content
+        let title, link, pubDate, author, image, category, content
         if (currentItem.querySelector("title"))
           title = currentItem.querySelector("title").textContent
         if (currentItem.querySelector("link"))
@@ -56,14 +57,14 @@ function App() {
         if (currentItem.querySelector("author"))
           author = currentItem.querySelector("author").textContent
         if (currentItem.querySelector("enclosure"))
-          image =
-            currentItem.querySelector("enclosure").attributes.url.textContent
+          image = currentItem.querySelector("enclosure").attributes.url.textContent
+        if (currentItem.querySelector("category"))
+          category = currentItem.querySelector("category").textContent
         if (currentItem.getElementsByTagName("turbo:content")) {
-          content =
-            currentItem.getElementsByTagName("turbo:content")[0].textContent
+          content = currentItem.getElementsByTagName("turbo:content")[0].textContent
         }
 
-        currentItem = { title, link, pubDate, author, image, content }
+        currentItem = { title, link, pubDate, author, image, category, content }
         // console.log(currentItem)
 
         setNews(currentItem)
